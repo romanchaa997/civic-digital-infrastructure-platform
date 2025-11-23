@@ -1,0 +1,61 @@
+name: Security Scanning
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 0 * * 0'  # Weekly scan
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - scanner: 'owasp-dependency-check'
+          - scanner: 'snyk'
+    
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    
+    - name: Run OWASP Dependency Check
+      if: matrix.scanner == 'owasp-dependency-check'
+      uses: dependency-check/Dependency-Check_Action@main
+      with:
+        project: 'civic-digital-infrastructure-platform'
+        path: '.'
+        format: 'JSON'
+        args: >
+          --enable-retired
+    
+    - name: Run Snyk vulnerability scan
+      if: matrix.scanner == 'snyk'
+      uses: snyk/actions/node@master
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      with:
+        args: --severity-threshold=high
+    
+    - name: Upload OWASP results
+      if: matrix.scanner == 'owasp-dependency-check'
+      uses: actions/upload-artifact@v3
+      with:
+        name: dependency-check-results
+        path: dependency-check-report.json
+    
+    - name: Comment on PR with results
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: 'Security scan completed. Check artifacts for detailed results.'
+          })
