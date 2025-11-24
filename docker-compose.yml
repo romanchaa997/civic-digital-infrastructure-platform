@@ -1,0 +1,63 @@
+version: '3.9'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: civic-infrastructure-api
+    ports:
+      - "${PORT:-3000}:3000"
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - PORT=3000
+      - CORS_ORIGIN=${CORS_ORIGIN:-http://localhost:3000}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - SEPOLIA_RPC_URL=${SEPOLIA_RPC_URL}
+      - MUMBAI_RPC_URL=${MUMBAI_RPC_URL}
+      - ARBITRUM_GOERLI_RPC_URL=${ARBITRUM_GOERLI_RPC_URL}
+      - DEPLOYMENT_PRIVATE_KEY=${DEPLOYMENT_PRIVATE_KEY}
+      - API_KEY_SECRET=${API_KEY_SECRET}
+      - RATE_LIMIT_WINDOW_MS=${RATE_LIMIT_WINDOW_MS:-3600000}
+      - RATE_LIMIT_MAX_REQUESTS=${RATE_LIMIT_MAX_REQUESTS:-100}
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - LOG_FORMAT=${LOG_FORMAT:-json}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - civic-network
+    volumes:
+      - ./uploads:/app/uploads
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  nginx:
+    image: nginx:alpine
+    container_name: civic-infrastructure-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certs:/etc/nginx/certs:ro
+    depends_on:
+      - app
+    networks:
+      - civic-network
+    restart: unless-stopped
+
+networks:
+  civic-network:
+    driver: bridge
+
+volumes:
+  app-data:
+    driver: local
