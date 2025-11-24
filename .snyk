@@ -1,0 +1,151 @@
+# Snyk Configuration for Civic Digital Infrastructure Platform
+# Dependency scanning, vulnerability detection, and policy enforcement
+
+version: v1.25.0
+
+# Vulnerability scanning configuration
+vulnerabilities:
+  # Severity thresholds
+  high:
+    enabled: true
+    action: fail
+  medium:
+    enabled: true
+    action: warn
+  low:
+    enabled: true
+    action: warn
+  
+  # Vulnerability reporting
+  report:
+    format: json
+    output: snyk-report.json
+    includeDevDependencies: true
+    includeTransitiveDependencies: true
+
+# Dependency scanning policy
+dependencies:
+  # Known vulnerability handling
+  knownVulnerabilities:
+    action: report
+    failOnUnpatchable: true
+  
+  # License scanning
+  licenses:
+    enabled: true
+    severities:
+      GPL-3.0: high
+      GPL-2.0: high
+      AGPL-3.0: high
+      Unlicense: low
+  
+  # Dependency updates
+  updates:
+    frequency: weekly
+    autoMerge: false
+
+# Policy enforcement
+policy:
+  # Security gates
+  securityGates:
+    - failOnHighSeverity: true
+    - failOnMediumSeverity: false
+    - failOnUnpatchable: true
+  
+  # Allowlist management
+  allowlist:
+    enabled: true
+    path: .snyk-allowlist.json
+  
+  # Remediation strategy
+  remediation:
+    preferUpgrade: true
+    autoFixable: true
+    testBeforeUpgrade: true
+
+# Exclusions
+exclusions:
+  - path: node_modules
+  - path: dist
+  - path: build
+  - path: coverage
+  - path: '**/*.d.ts'
+  - path: '**/*.test.ts'
+  - path: '**/*.spec.ts'
+
+# DAST configuration
+dynamicAnalysis:
+  enabled: true
+  testEnvironment: staging
+  crawlUrls:
+    - http://localhost:3000
+    - http://localhost:3000/api
+  
+  # Authentication
+  authentication:
+    enabled: false
+    type: bearer
+
+# Monitoring
+monitoring:
+  enabled: true
+  frequency: daily
+  notifications:
+    email: true
+    slack: true
+  
+  # Threshold monitoring
+  thresholds:
+    highSeverityCount: 0
+    mediumSeverityCount: 5
+    lowSeverityCount: 10
+
+# Integration settings
+integration:
+  # GitHub integration
+  github:
+    enabled: true
+    autoFixPRs: false
+    autoUpgradePRs: false
+  
+  # CI/CD integration
+  cicd:
+    enabled: true
+    failOnError: true
+    failOnWarning: false
+
+# Reporting
+reporting:
+  # SBOM generation
+  sbom:
+    enabled: true
+    format: cyclonedx
+    output: sbom.json
+  
+  # Compliance reporting
+  compliance:
+    standards:
+      - CWE
+      - CVSS
+      - OWASP-Top-10
+    includeRemediationSteps: true
+
+# Organization settings
+organization:
+  name: civic-digital
+  source: github
+  tags:
+    - infrastructure
+    - production
+    - security
+
+# Advanced settings
+advanced:
+  # Package manager configuration
+  packageManager: npm
+  lockfileStrategy: update
+  
+  # Stricter checks
+  strictMode: true
+  includeTransitiveDependencies: true
+  deepDependencyAnalysis: true
