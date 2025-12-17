@@ -1,0 +1,54 @@
+# ConfigMaps for Civic Platform
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: civic-platform-config
+  namespace: civic-platform
+  labels:
+    app: civic-platform
+data:
+  # API Configuration
+  API_PORT: "8080"
+  API_HOST: "0.0.0.0"
+  API_LOG_LEVEL: "INFO"
+  
+  # Database Configuration
+  DB_HOST: "postgres.civic-platform.svc.cluster.local"
+  DB_PORT: "5432"
+  DB_NAME: "civic_db"
+  DB_SSL_MODE: "require"
+  
+  # Redis Configuration
+  REDIS_HOST: "redis.civic-platform.svc.cluster.local"
+  REDIS_PORT: "6379"
+  REDIS_DB: "0"
+  
+  # Service Configuration
+  SERVICE_MESH: "istio"
+  TRACING_ENABLED: "true"
+  METRICS_ENABLED: "true"
+  
+  # Security
+  JWT_ALGORITHM: "HS256"
+  CORS_ENABLED: "true"
+  CORS_ORIGINS: "*"
+  
+  # Application Settings
+  APP_NAME: "civic-platform"
+  APP_VERSION: "1.0.0"
+  ENVIRONMENT: "production"
+---
+# ConfigMap for application properties
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-properties
+  namespace: civic-platform
+  labels:
+    app: civic-platform
+data:
+  application.properties: |
+    spring.application.name=civic-platform
+    spring.profiles.active=production
+    server.port=8080
+    logging.level.root=INFO
