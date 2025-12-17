@@ -1,0 +1,28 @@
+# Kubernetes Services for Civic Platform
+apiVersion: v1
+kind: Service
+metadata:
+  name: civic-api-service
+  namespace: civic-platform
+spec:
+  selector:
+    app: civic-api
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: civic-api-lb
+  namespace: civic-platform
+spec:
+  selector:
+    app: civic-api
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+  type: LoadBalancer
