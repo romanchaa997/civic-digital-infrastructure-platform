@@ -1,0 +1,27 @@
+# Kubernetes Deployments for Civic Platform
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: civic-api
+  namespace: civic-platform
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: civic-api
+  template:
+    metadata:
+      labels:
+        app: civic-api
+    spec:
+      containers:
+      - name: civic-api
+        image: registry.example.com/civic-platform:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: DB_HOST
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: password
