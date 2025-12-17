@@ -1,0 +1,25 @@
+# Kubernetes Ingress Controller for Civic Platform
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: civic-ingress
+  namespace: civic-platform
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - civic.example.com
+    secretName: civic-tls
+  rules:
+  - host: civic.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: civic-api-lb
+            port:
+              number: 80
