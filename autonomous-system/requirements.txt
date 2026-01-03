@@ -1,7 +1,7 @@
 aiohttp==3.9.1
 aiofiles==23.2.1
 python-dotenv==1.0.0
-requests==2.31.0
+requests==2.32.4
 pydantic==2.5.0
 pydantic-settings==2.1.0
 logging-loki==0.3.2
