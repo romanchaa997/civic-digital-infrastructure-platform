@@ -1,0 +1,24 @@
+# Code Owners for Civic Digital Infrastructure Platform
+# Infrastructure and governance tools for digital democracy
+
+* @romanchaa997
+
+# Core infrastructure
+/infrastructure/ @romanchaa997
+/api/ @romanchaa997
+/services/ @romanchaa997
+/backend/ @romanchaa997
+
+# Civic governance features
+/governance/ @romanchaa997
+/democracy/ @romanchaa997
+/voting/ @romanchaa997
+
+# Configuration and deployment
+/.github/ @romanchaa997
+Terraform/ @romanchaa997
+kubernetes/ @romanchaa997
+
+# Documentation
+/*.md @romanchaa997
+/docs/ @romanchaa997
