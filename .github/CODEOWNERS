@@ -1,0 +1,45 @@
+# Code Owners for Civic Digital Infrastructure Platform
+# This file specifies who should review pull requests for different areas of the codebase
+
+# Default owners for everything in the repo
+* @romanchaa997
+
+# Autonomous system components
+/autonomous-system/ @romanchaa997
+
+# Coordinator services
+/coordinator/ @romanchaa997
+
+# Documentation
+/docs/ @romanchaa997
+
+# Kubernetes configuration
+/k8s/ @romanchaa997
+
+# Scripts and utilities
+/scripts/ @romanchaa997
+
+# Source code
+/src/ @romanchaa997
+
+# Testing
+/tests/integration/ @romanchaa997
+
+# GitHub workflows and CI/CD
+/.github/workflows/ @romanchaa997
+
+# Configuration files
+/.env.example @romanchaa997
+/.eslintignore @romanchaa997
+/.eslintrc.json @romanchaa997
+/.snyk @romanchaa997
+
+# Deployment and infrastructure
+AWS-CLI-DEPLOYMENT.sh @romanchaa997
+AWS-DEPLOYMENT-GUIDE.md @romanchaa997
+DEPLOYMENT_READINESS_CHECKLIST.md @romanchaa997
+DEPLOYMENT_SUMMARY.md @romanchaa997
+DEVSECOPS_STRATEGY.md @romanchaa997
+
+# AI partnerships and orchestration
+AI_PARTNERSHIPS_ORCHESTRATOR_IMPLEMENTATION.md @romanchaa997
