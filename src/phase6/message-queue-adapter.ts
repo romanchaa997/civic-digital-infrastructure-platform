@@ -1,0 +1,1 @@
+export class MessageQueueAdapter {private queue = [];private workers = [];enqueue(msg: any){this.queue.push(msg);}dequeue(){return this.queue.shift();}addWorker(handler: Function){this.workers.push(handler);}process(){while(this.queue.length>0){const msg = this.dequeue();for(const worker of this.workers) worker(msg);}}} export default MessageQueueAdapter;
