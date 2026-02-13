@@ -1,0 +1,3 @@
+export interface WebSocketMessage { id: string; type: string; payload: any; timestamp: number; }
+export class RealtimeEngine { private connections = new Map(); connect(clientId: string) { this.connections.set(clientId, { id: clientId, connected: Date.now(), subscriptions: new Set() }); return true; } broadcast(message: WebSocketMessage) { for (const [id, conn] of this.connections) { if(conn.subscriptions.has(message.type)) this.send(id, message); } } send(clientId: string, msg: WebSocketMessage) { const conn = this.connections.get(clientId); if(conn) conn.lastMessage = msg; } subscribe(clientId: string, channel: string) { this.connections.get(clientId)?.subscriptions.add(channel); } }
+export default RealtimeEngine;
